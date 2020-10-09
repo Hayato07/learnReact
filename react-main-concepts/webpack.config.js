@@ -19,7 +19,7 @@ const dist = `${__dirname}/dist`;
 
 module.exports = {
   mode: 'development',
-  entry: src + '/1_hello_world.jsx',
+  entry: src + '/2_introducing_jsx.jsx',
   output: {
     path: dist,
     filename: 'jsx_bundle.js'
