@@ -19,7 +19,7 @@ const dist = `${__dirname}/dist`;
 
 module.exports = {
   mode: 'development',
-  entry: src + '/6_handling_events.jsx',
+  entry: src + '/7_conditional_rendering.jsx',
   output: {
     path: dist,
     filename: 'jsx_bundle.js'
