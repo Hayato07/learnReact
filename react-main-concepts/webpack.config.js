@@ -19,7 +19,7 @@ const dist = `${__dirname}/dist`;
 
 module.exports = {
   mode: 'development',
-  entry: src + '/4_components_and_props.jsx',
+  entry: src + '/5_state_and_lifecycle.jsx',
   output: {
     path: dist,
     filename: 'jsx_bundle.js'
