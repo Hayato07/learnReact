@@ -19,7 +19,7 @@ const dist = `${__dirname}/dist`;
 
 module.exports = {
   mode: 'development',
-  entry: src + '/11_composition_vs_inheritance.jsx',
+  entry: src + '/12_thinking_in_react.jsx',
   output: {
     path: dist,
     filename: 'jsx_bundle.js'
