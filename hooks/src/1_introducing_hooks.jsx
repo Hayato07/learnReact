@@ -8,8 +8,9 @@
  * - useEffect componentDidMountなどを実現できる
  * 
  * なぜHooksは生まれたのか
- * 
- * 
+ * - コンポーネント間でステートフルロジックを再利用しづらい
+ * - クラスではコンポーネントが複雑になりやすい
+ * - JSにおけるthisの動作
  */
 
 import React, { useState } from "react";
