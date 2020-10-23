@@ -6,7 +6,7 @@
  * 関数コンポーネントで呼び出し、状態を追加する
  */
 
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
 function Example() {
@@ -16,12 +16,12 @@ function Example() {
     const [count, setCount] = useState(0);
     const [age, setAge] = useState(12);
 
-    return(
+    return (
         <div>
             <p>your age: {age}</p>
-            <input type="number" onChange={(e) => setAge(e.target.value)}/>
+            <input type="number" onChange={(e) => setAge(e.target.value)} />
             <p>you clicked {count} times</p>
-            <button onClick={()=> setCount(count+1)}>
+            <button onClick={() => setCount(count + 1)}>
                 Click me
             </button>
         </div>
@@ -45,26 +45,26 @@ ReactDOM.render(
  * arrayに空配列をわたすことで、componentDidMount時にのみ実行させることができる
  */
 
- import {useEffect} from 'react';
+import { useEffect } from 'react';
 
- function Example2() {
-     const [count, setCount] = useState(0);
+function Example2() {
+    const [count, setCount] = useState(0);
 
-     useEffect(() => {
-         document.title = `You clicked ${count} times`;
-     });
+    useEffect(() => {
+        document.title = `You clicked ${count} times`;
+    });
 
-     return (
-         <div>
-             <p>you clicked {count} times</p>
-             <button onClick={() => setCount(count + 1)}>
-                 Click me
+    return (
+        <div>
+            <p>you clicked {count} times</p>
+            <button onClick={() => setCount(count + 1)}>
+                Click me
              </button>
-         </div>
-     );
- }
+        </div>
+    );
+}
 
- ReactDOM.render(
+ReactDOM.render(
     <Example2 />,
     document.getElementById('root')
 );
@@ -93,8 +93,63 @@ function FriendStatus(props) {
         }
     });
 
-    if(isOnline === null) {
+    if (isOnline === null) {
         return 'Loading';
     }
     return isOnline ? 'Online' : 'Offline';
+}
+
+/**
+ * Hooksのルール
+ * - トップレベルで呼び出すこと
+ * Hooksは、呼び出される順番によって、それぞれの状態を管理しています
+ * なので、ループの中や、if文の中にあり呼び出される回数が変わるとそれぞれのstateが混じる状態が発生します。
+ * - Reactの関数コンポーネントからのみ呼び出す
+ * classからは呼び出してはいけませんし、友情のJavaScriptの関数から呼び出してもいけません。
+ * カスタムHooksからならOKです。
+ * これらを強要してくれる便利なlinterがあります。
+ * https://www.npmjs.com/package/eslint-plugin-react-hooks
+ */
+
+/**
+ * 独自のhooksを作ろう
+ * 便利なロジックを再利用する際にこれまでは、さらに高次のコンポーネントを用意してpropsで子コンポーネントに
+ * 渡すという方法をとっていました。
+ * しかし独自のhooksを作ることでこの作業から開放されます。
+ */
+
+// クリーンアップの説明で利用した関数の処理を独自hooksにして再利用する
+// use○○○○○とすることでフックとみなす慣例(中にuseStateなどを使っていれば)
+function useFriendStatus(friendID) {
+    const [isOnline, setIsOnline] = useState(null);
+
+    function handleStatusChange(status) {
+        setIsOnline(status.isOnline);
+    }
+
+    useEffect(() => {
+        ChatAPI.subscribeToFriendStatus(friendID, handleStatusChange);
+        return () => {
+            ChatAPI.unsubscribeFromFriendStatus(friendID, handleStatusChange);
+        };
+    });
+}
+
+function FriendStatus(props) {
+    const isOnline = useFriendStatus(props.friend.id);
+
+    if(isOnline === null) {
+        return 'Loading...';
+    }
+    return isOnline ? 'Online' : 'Offline';
+}
+
+function FriendListItem(props) {
+    const isOnline = useFriendStatus(props.friend.id);
+
+    return (
+        <li style={{ color: isOnline ? 'green' : 'black'}}>
+            {props.friend.name}
+        </li>
+    );
 }
