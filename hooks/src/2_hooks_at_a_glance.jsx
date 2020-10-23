@@ -119,6 +119,7 @@ function FriendStatus(props) {
  */
 
 // クリーンアップの説明で利用した関数の処理を独自hooksにして再利用する
+// フック部分の処理を切り離してあげるだけ！！
 // use○○○○○とすることでフックとみなす慣例(中にuseStateなどを使っていれば)
 function useFriendStatus(friendID) {
     const [isOnline, setIsOnline] = useState(null);
@@ -153,3 +154,10 @@ function FriendListItem(props) {
         </li>
     );
 }
+
+/**
+ * 他にもあるhooks
+ * useContext
+ * useReducer
+ * などなど
+ */
