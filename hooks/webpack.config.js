@@ -3,7 +3,7 @@ const dist = `${__dirname}/dist`;
 
 module.exports = {
   mode: 'development',
-  entry: src + '/2_hooks_at_a_glance.jsx',
+  entry: src + '/3_using_the_state_hook',
   output: {
     path: dist,
     filename: 'index.js'
